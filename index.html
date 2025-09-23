@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التنمية المجتمعية المرتكزة على الموارد (ABCD)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: تم تصميم التطبيق ليكون تفاعليًا ومقسمًا إلى أربعة أقسام رئيسية يمكن التنقل بينها عبر شريط علوي، بدلاً من عرض المحتوى بشكل خطي. هذا الهيكل (المفاهيم، المنهجية، الأدوات، الاستراتيجيات) يتيح للمستخدم استكشاف الموضوع الذي يهمه أولاً ويعزز من فهمه للمحتوى. التفاعلات مثل المخططات البيانية، البطاقات القابلة للنقر، والخطوات المتسلسلة تهدف إلى تحويل المحتوى النظري إلى تجربة تعلم مرئية وجذابة، مما يسهل استيعاب المفاهيم المعقدة. -->
+    <!-- Visualization & Content Choices: 
+        1. أنواع الموارد -> الهدف: تنظيم وعرض -> الطريقة: مخطط دائري (Donut Chart) باستخدام Chart.js -> التفاعل: إظهار اسم المورد عند المرور فوقه. -> المبرر: تقديم أنواع الموارد المختلفة بطريقة مرئية ومبتكرة بدلاً من قائمة نصية.
+        2. ركائز المنهجية -> الهدف: تنظيم وإعلام -> الطريقة: بطاقات تفاعلية (HTML/Tailwind) -> التفاعل: النقر على البطاقة لعرض تفاصيلها. -> المبرر: تقسيم المحتوى إلى أجزاء صغيرة وتشجيع المستخدم على التفاعل لاستكشاف كل ركيزة.
+        3. خطوات إدارة الاتصال -> الهدف: عرض تسلسل -> الطريقة: مخطط خطوات عمودي (HTML/CSS) -> التفاعل: إبراز الخطوة النشطة عند النقر. -> المبرر: توضيح العملية المتسلسلة بطريقة سهلة المتابعة والفهم.
+        4. استراتيجيات التواصل -> الهدف: مقارنة وتنظيم -> الطريقة: ألسنة تبويب (Tabs) -> التفاعل: التبديل بين "اللقاءات الحوارية" و "الخطة التكاملية". -> المبرر: تنظيم المحتوى المتعلق بالاستراتيجيات وتسهيل المقارنة بينها.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .active-tab {
+            border-color: #A16207;
+            color: #A16207;
+            background-color: #FEFCE8;
+        }
+        .tab-content {
+            display: none;
+        }
+        .active-content {
+            display: block;
+        }
+        .rtl-chart-tooltip {
+            direction: rtl;
+            text-align: right;
+        }
+        .step {
+            transition: all 0.3s ease;
+        }
+        .step.active {
+            transform: scale(1.05);
+            border-color: #A16207;
+        }
+    </style>
+</head>
+<body class="bg-yellow-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-5xl font-bold text-yellow-900 mb-2">التنمية المجتمعية المرتكزة على الموارد (ABCD)</h1>
+            <p class="text-lg text-yellow-800 max-w-3xl mx-auto">استكشاف تفاعلي لمنهجية بناء المجتمعات من خلال استثمار أصولها وقدراتها المحلية.</p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-10 sticky top-0 bg-yellow-50/90 backdrop-blur-sm py-4 z-10">
+            <button data-target="concepts" class="nav-tab active-tab text-sm md:text-base font-semibold px-4 py-2 rounded-full border-2 border-transparent transition-all duration-300">المفاهيم والتمويل</button>
+            <button data-target="methodology" class="nav-tab text-sm md:text-base font-semibold px-4 py-2 rounded-full border-2 border-transparent transition-all duration-300">منهجية ABCD</button>
+            <button data-target="tools" class="nav-tab text-sm md:text-base font-semibold px-4 py-2 rounded-full border-2 border-transparent transition-all duration-300">أدوات عملية</button>
+            <button data-target="strategies" class="nav-tab text-sm md:text-base font-semibold px-4 py-2 rounded-full border-2 border-transparent transition-all duration-300">استراتيجيات التواصل</button>
+        </nav>
+
+        <main>
+            <section id="concepts" class="tab-content active-content">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-yellow-200">
+                    <h2 class="text-2xl font-bold text-yellow-900 mb-4">تدبير التمويل وتعبئة الموارد</h2>
+                    <p class="mb-6 text-gray-600">
+                        يعتبر تدبير التمويل حجر الزاوية في استدامة أي جهد تنموي. في هذا القسم، نستعرض مفهومه، الأطراف المسؤولة عنه، وأهم أنواع الموارد التي يمكن للمجتمع استثمارها. الفكرة ليست فقط في جمع الأموال، بل في إدارة كافة الأصول المتاحة بكفاءة لتحقيق الأهداف المجتمعية.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-yellow-800">الأطراف المسؤولة عن التنمية</h3>
+                            <p class="mb-4 text-gray-600">تقع مسؤولية تمويل تنمية المجتمع على عاتق ثلاثة أطراف رئيسية تعمل معًا في شراكة متكاملة:</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center p-3 bg-yellow-100/50 rounded-lg">
+                                    <span class="text-yellow-700 text-xl mr-4">🏛️</span>
+                                    <div>
+                                        <h4 class="font-bold">الحكومة</h4>
+                                        <p class="text-sm text-gray-500">من خلال السياسات العامة والميزانيات المخصصة.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-center p-3 bg-yellow-100/50 rounded-lg">
+                                    <span class="text-yellow-700 text-xl mr-4">💼</span>
+                                    <div>
+                                        <h4 class="font-bold">القطاع الخاص</h4>
+                                        <p class="text-sm text-gray-500">عبر الاستثمارات ومبادرات المسؤولية المجتمعية.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-center p-3 bg-yellow-100/50 rounded-lg">
+                                    <span class="text-yellow-700 text-xl mr-4">🤝</span>
+                                    <div>
+                                        <h4 class="font-bold">المؤسسات غير الحكومية</h4>
+                                        <p class="text-sm text-gray-500">سواء كانت ممولة، منفذة، أو كلاهما.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="chart-container relative h-80 md:h-96 w-full max-w-md mx-auto">
+                            <canvas id="resourcesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="methodology" class="tab-content">
+                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-yellow-200">
+                    <h2 class="text-2xl font-bold text-yellow-900 mb-4">فلسفة وركائز منهجية ABCD</h2>
+                    <p class="mb-6 text-gray-600">
+                       ترتكز منهجية ABCD على تحول جوهري في التفكير: من التركيز على "ماذا ينقصنا؟" إلى "ماذا نملك؟". إنها دعوة لاكتشاف واستثمار الثروات الكامنة في كل مجتمع. هنا، نستعرض الركائز الخمس الأساسية التي تشكل فلسفة هذه المنهجية التمكينية.
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+                        <button data-pillar="1" class="pillar-btn p-3 text-center bg-yellow-100 rounded-lg hover:bg-yellow-200 transition-all duration-300 focus:ring-2 focus:ring-yellow-500">
+                            <div class="text-3xl mb-2">💎</div>
+                            <span class="font-semibold text-sm">الأصول أولاً</span>
+                        </button>
+                        <button data-pillar="2" class="pillar-btn p-3 text-center bg-yellow-100 rounded-lg hover:bg-yellow-200 transition-all duration-300 focus:ring-2 focus:ring-yellow-500">
+                            <div class="text-3xl mb-2">💡</div>
+                            <span class="font-semibold text-sm">الأفراد محرك التغيير</span>
+                        </button>
+                        <button data-pillar="3" class="pillar-btn p-3 text-center bg-yellow-100 rounded-lg hover:bg-yellow-200 transition-all duration-300 focus:ring-2 focus:ring-yellow-500">
+                            <div class="text-3xl mb-2">🔗</div>
+                            <span class="font-semibold text-sm">العلاقات رأس المال</span>
+                        </button>
+                        <button data-pillar="4" class="pillar-btn p-3 text-center bg-yellow-100 rounded-lg hover:bg-yellow-200 transition-all duration-300 focus:ring-2 focus:ring-yellow-500">
+                            <div class="text-3xl mb-2">🏛️</div>
+                            <span class="font-semibold text-sm">المؤسسات داعمة</span>
+                        </button>
+                        <button data-pillar="5" class="pillar-btn p-3 text-center bg-yellow-100 rounded-lg hover:bg-yellow-200 transition-all duration-300 focus:ring-2 focus:ring-yellow-500">
+                            <div class="text-3xl mb-2">🌱</div>
+                            <span class="font-semibold text-sm">التنمية من الداخل</span>
+                        </button>
+                    </div>
+                    <div id="pillar-details" class="p-6 bg-yellow-50 rounded-lg min-h-[150px] flex items-center justify-center transition-all duration-500">
+                        <p class="text-center text-yellow-800 font-semibold">انقر على إحدى الركائز أعلاه لعرض تفاصيلها.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tools" class="tab-content">
+                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-yellow-200">
+                    <h2 class="text-2xl font-bold text-yellow-900 mb-4">أداة الاتصال المبني على الموارد</h2>
+                     <p class="mb-6 text-gray-600">
+                        لتحويل فلسفة ABCD إلى واقع، نحتاج إلى أدوات عملية. "شجرة الاتصال" هي إحدى هذه الأدوات الفعالة التي تساعد على حصر الموارد المحلية وتنظيم التعاون بين مختلف الجهات. هذا القسم يوضح الخطوات الست لإدارة هذه الأداة بفعالية، مما يضمن تحقيق التكامل واستدامة المبادرات.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="step-item p-4 border-r-4 border-yellow-200 cursor-pointer" data-step="1">
+                            <h3 class="font-bold text-lg text-yellow-800">1. حصر الموارد المتاحة</h3>
+                            <p class="step-desc hidden text-gray-600 mt-1">حصر الموارد المتاحة محليًا (بشرية ومادية) بما يتوافق مع أهداف المشروع.</p>
+                        </div>
+                        <div class="step-item p-4 border-r-4 border-yellow-200 cursor-pointer" data-step="2">
+                            <h3 class="font-bold text-lg text-yellow-800">2. تحديد نقاط التعاون</h3>
+                            <p class="step-desc hidden text-gray-600 mt-1">تحديد نقاط التعاون الممكنة مع الجهات المالكة للموارد.</p>
+                        </div>
+                        <div class="step-item p-4 border-r-4 border-yellow-200 cursor-pointer" data-step="3">
+                            <h3 class="font-bold text-lg text-yellow-800">3. تنظيم زيارات تنسيقية</h3>
+                            <p class="step-desc hidden text-gray-600 mt-1">تنظيم زيارات ميدانية للتفاوض حول سبل تبادل الموارد والمنفعة المتبادلة.</p>
+                        </div>
+                        <div class="step-item p-4 border-r-4 border-yellow-200 cursor-pointer" data-step="4">
+                            <h3 class="font-bold text-lg text-yellow-800">4. توقيع الاتفاقيات</h3>
+                            <p class="step-desc hidden text-gray-600 mt-1">صياغة وتوقيع الاتفاقيات وبروتوكولات التعاون لضمان الالتزام.</p>
+                        </div>
+                        <div class="step-item p-4 border-r-4 border-yellow-200 cursor-pointer" data-step="5">
+                            <h3 class="font-bold text-lg text-yellow-800">5. تصميم خطة تكاملية</h3>
+                            <p class="step-desc hidden text-gray-600 mt-1">وضع خطة عمل مشتركة وواضحة مع الشركاء المحليين.</p>
+                        </div>
+                        <div class="step-item p-4 border-r-4 border-yellow-200 cursor-pointer" data-step="6">
+                            <h3 class="font-bold text-lg text-yellow-800">6. توثيق الجهود</h3>
+                            <p class="step-desc hidden text-gray-600 mt-1">توثيق جميع الجهود التكاملية لتقييمها والاستفادة منها مستقبلاً.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="strategies" class="tab-content">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-yellow-200">
+                    <h2 class="text-2xl font-bold text-yellow-900 mb-4">استراتيجيات التواصل والتنسيق</h2>
+                    <p class="mb-6 text-gray-600">
+                        التواصل الفعال هو شريان الحياة لنجاح أي مبادرة مجتمعية. لا يكفي تحديد الموارد، بل يجب بناء جسور من الثقة والتنسيق بين جميع الأطراف. هنا، نتعمق في استراتيجيتين رئيسيتين: اللقاءات الحوارية الدورية، والخطة التكاملية التي تضمن توحيد الجهود لتحقيق أقصى تأثير.
+                    </p>
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="flex -mb-px" aria-label="Tabs">
+                            <button class="strategy-tab active-tab w-1/2 py-4 px-1 text-center border-b-2 font-medium text-lg">
+                                اللقاءات الحوارية
+                            </button>
+                            <button class="strategy-tab w-1/2 py-4 px-1 text-center border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-yellow-700 hover:border-yellow-300">
+                                الخطة التكاملية
+                            </button>
+                        </nav>
+                    </div>
+                    <div>
+                        <div id="strategy-content-1" class="strategy-content block">
+                             <h3 class="text-xl font-semibold mb-3 text-yellow-800">اللقاءات الحوارية: منصة للشراكة</h3>
+                            <p class="mb-4">هي لقاءات دورية تضم ممثلين عن الجمعيات، والجهات الحكومية، والمجتمع المدني، والقطاع الخاص. تهدف إلى كسب التأييد وتحديد أوجه التعاون.</p>
+                            <ul class="list-disc pr-5 space-y-2 text-gray-600">
+                                <li><strong>الهدف الرئيسي:</strong> كسب التأييد وبناء الثقة وتحديد فرص التعاون.</li>
+                                <li><strong>الدورية:</strong> تُعقد كل شهر أو ثلاثة أشهر لمدة ساعتين.</li>
+                                <li><strong>الإدارة:</strong> بواسطة ميسر محايد، ويفضل أن يكون قيادة مجتمعية، مع توثيق النتائج.</li>
+                                <li><strong>جدول الأعمال:</strong> عرض أنشطة المشروع المتوقعة ومناقشة أوجه التعاون الممكنة.</li>
+                            </ul>
+                        </div>
+                        <div id="strategy-content-2" class="strategy-content hidden">
+                            <h3 class="text-xl font-semibold mb-3 text-yellow-800">الخطة التكاملية: خارطة طريق للنجاح</h3>
+                            <p class="mb-4">هي آلية هامة لتنسيق أنشطة وجهود وموارد الأطراف المعنية بالقضايا ذات الاهتمام المشترك (مثل التعليم، الصحة، البيئة، والتمكين الاقتصادي).</p>
+                             <ul class="list-disc pr-5 space-y-2 text-gray-600">
+                                <li><strong>الهدف الرئيسي:</strong> ضمان الاستخدام الأمثل للموارد المحلية بالتكامل مع موارد المشروع المتاحة.</li>
+                                <li><strong>التركيز:</strong> تنسيق الأنشطة والجهود والموارد حول قضايا مشتركة.</li>
+                                <li><strong>النتيجة:</strong> تعزيز النتائج والمخرجات المتوقعة وتحقيق تأثير أكبر.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active-tab'));
+                    tab.classList.add('active-tab');
+
+                    const targetId = tab.dataset.target;
+                    contents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.add('active-content');
+                        } else {
+                            content.classList.remove('active-content');
+                        }
+                    });
+                });
+            });
+
+            const pillarData = {
+                '1': { title: 'كل مجتمع يمتلك أصولًا', text: 'مثل مهارات الأفراد، الشبكات الاجتماعية، الموارد الطبيعية، والمؤسسات المحلية. الأساس هو النظر إلى ما هو موجود وليس ما هو مفقود.' },
+                '2': { title: 'الأفراد هم المحرك الأساسي للتغيير', text: 'فكل شخص لديه موهبة أو قدرة يمكن أن يستفيد منها المجتمع. التنمية الحقيقية تبدأ من طاقات الأفراد.' },
+                '3': { title: 'العلاقات والشبكات الاجتماعية تعتبر رأس المال الاجتماعي', text: 'فالتواصل بين الأفراد يفتح فرصًا جديدة ويبني الثقة اللازمة للعمل الجماعي.' },
+                '4': { title: 'المؤسسات المحلية موارد مهمة', text: 'دورها يقتصر على الدعم وتسهيل العمل، وليس أن تكون بديلًا عن المجتمع ومبادراته.' },
+                '5': { title: 'التنمية تنطلق من الداخل إلى الخارج', text: 'حيث تبتكر المجتمعات حلولها بنفسها بناءً على أولوياتها ومواردها، بدلاً من انتظار التدخل الخارجي.' },
+            };
+            
+            const pillarBtns = document.querySelectorAll('.pillar-btn');
+            const pillarDetails = document.getElementById('pillar-details');
+
+            pillarBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const pillarId = btn.dataset.pillar;
+                    const data = pillarData[pillarId];
+                    pillarDetails.innerHTML = `<div class="text-center">
+                        <h4 class="text-xl font-bold text-yellow-900 mb-2">${data.title}</h4>
+                        <p class="text-gray-700">${data.text}</p>
+                    </div>`;
+                });
+            });
+            
+            const stepItems = document.querySelectorAll('.step-item');
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const currentActive = document.querySelector('.step-item.active');
+                    if (currentActive && currentActive !== item) {
+                        currentActive.classList.remove('active', 'bg-yellow-100/60');
+                        currentActive.querySelector('.step-desc').classList.add('hidden');
+                    }
+                    
+                    item.classList.toggle('active');
+                    item.classList.toggle('bg-yellow-100/60');
+                    item.querySelector('.step-desc').classList.toggle('hidden');
+                });
+            });
+
+            const strategyTabs = document.querySelectorAll('.strategy-tab');
+            const strategyContents = document.querySelectorAll('.strategy-content');
+            strategyTabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    strategyTabs.forEach(t => t.classList.remove('active-tab'));
+                    tab.classList.add('active-tab');
+                    strategyContents.forEach(c => c.classList.add('hidden'));
+                    strategyContents[index].classList.remove('hidden');
+                });
+            });
+
+            const ctx = document.getElementById('resourcesChart').getContext('2d');
+            const resourcesData = {
+                labels: ['الخبرات', 'الأراضي والمباني', 'الخامات', 'الاستشارات', 'العمالة', 'الأموال', 'الموارد البشرية'],
+                datasets: [{
+                    label: 'أنواع الموارد',
+                    data: [1, 1, 1, 1, 1, 1, 1],
+                    backgroundColor: [
+                        '#FDE68A',
+                        '#FCD34D',
+                        '#FBBF24',
+                        '#F59E0B',
+                        '#D97706',
+                        '#B45309',
+                        '#92400E'
+                    ],
+                    hoverOffset: 4,
+                    borderColor: '#FEFCE8',
+                    borderWidth: 2
+                }]
+            };
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: resourcesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Cairo', sans-serif"
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'تنوع الموارد المجتمعية المتاحة',
+                            font: {
+                                size: 18,
+                                family: "'Cairo', sans-serif"
+                            },
+                             color: '#92400E'
+                        },
+                        tooltip: {
+                            bodyFont: {
+                                family: "'Cairo', sans-serif"
+                            },
+                            titleFont: {
+                                family: "'Cairo', sans-serif"
+                            },
+                            rtl: true,
+                             textDirection: 'rtl',
+                             bodyAlign: 'right',
+                             titleAlign: 'right',
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
